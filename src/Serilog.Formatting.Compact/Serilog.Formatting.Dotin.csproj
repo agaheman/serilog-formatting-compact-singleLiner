@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <Description>A simple, compact JSON-based event format for Serilog.</Description>
-    <Version>1.1.1-SingleLine2</Version>
+    <Version>1.1.1-SingleLine4</Version>
+    <VersionPrefix>1.1.1</VersionPrefix>
     <Authors>H.Shamekhi</Authors>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Serilog.Formatting.DotinSingleLiner</AssemblyName>
-    <PackageId>Serilog.Formatting.DotinSingleLiner</PackageId>
+    <AssemblyName>Serilog.Formatting.Dotin</AssemblyName>
+    <PackageId>Serilog.Formatting.Dotin</PackageId>
     <PackageTags>serilog;json</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <DebugType>embedded</DebugType>

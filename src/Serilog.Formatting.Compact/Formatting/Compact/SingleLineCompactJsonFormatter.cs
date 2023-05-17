@@ -1,38 +1,26 @@
-﻿// Copyright 2016 Serilog Contributors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-using Serilog.Events;
+﻿using Serilog.Events;
 using Serilog.Formatting.Json;
+using Serilog.Parsing;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
-namespace Serilog.Formatting.DotinSingleLiner
+namespace Serilog.Formatting.Dotin
 {
     /// <summary>
-    /// An <see cref="ITextFormatter"/> that writes events in a compact JSON format, for consumption in environments 
-    /// without message template support. Message templates are rendered into text and a hashed event id is included.
+    /// An <see cref="ITextFormatter"/> that writes events in a compact JSON format.
     /// </summary>
-    public class RenderedCompactJsonFormatter : ITextFormatter
+    public class SingleLineCompactJsonFormatter : ITextFormatter
     {
         readonly JsonValueFormatter _valueFormatter;
 
         /// <summary>
-        /// Construct a <see cref="CompactJsonFormatter"/>, optionally supplying a formatter for
+        /// Construct a <see cref="SingleLineCompactJsonFormatter"/>, optionally supplying a formatter for
         /// <see cref="LogEventPropertyValue"/>s on the event.
         /// </summary>
         /// <param name="valueFormatter">A value formatter, or null.</param>
-        public RenderedCompactJsonFormatter(JsonValueFormatter valueFormatter = null)
+        public SingleLineCompactJsonFormatter(JsonValueFormatter valueFormatter = null)
         {
             _valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
         }
@@ -62,13 +50,34 @@ namespace Serilog.Formatting.DotinSingleLiner
 
             output.Write("{\"@t\":\"");
             output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
-            output.Write("\",\"@m\":");
-            var message = logEvent.MessageTemplate.Render(logEvent.Properties);
-            JsonValueFormatter.WriteQuotedJsonString(message, output);
-            output.Write(",\"@i\":\"");
-            var id = EventIdHash.Compute(logEvent.MessageTemplate.Text);
-            output.Write(id.ToString("x8"));
-            output.Write('"');
+            output.Write("\",\"@mt\":");
+
+            var cleanedMessageTemplate = logEvent.MessageTemplate.Text.Trim()
+                        .Replace("\n", " ")
+                        .Replace("\r", " ");
+
+            JsonValueFormatter.WriteQuotedJsonString(cleanedMessageTemplate, output);
+
+            var tokensWithFormat = logEvent.MessageTemplate.Tokens
+                .OfType<PropertyToken>()
+                .Where(pt => pt.Format != null);
+
+            // Better not to allocate an array in the 99.9% of cases where this is false
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (tokensWithFormat.Any())
+            {
+                output.Write(",\"@r\":[");
+                var delim = "";
+                foreach (var r in tokensWithFormat)
+                {
+                    output.Write(delim);
+                    delim = ",";
+                    var space = new StringWriter();
+                    r.Render(logEvent.Properties, space);
+                    JsonValueFormatter.WriteQuotedJsonString(space.ToString(), output);
+                }
+                output.Write(']');
+            }
 
             if (logEvent.Level != LogEventLevel.Information)
             {
@@ -81,7 +90,7 @@ namespace Serilog.Formatting.DotinSingleLiner
             {
                 output.Write(",\"@x\":");
 
-                var cleanedException = logEvent.Exception.ToString().Trim()
+                var cleanedException = logEvent.Exception.ToStringDemystified()
                     .Replace("\n", " ")
                     .Replace("\r", " ");
 
@@ -100,20 +109,7 @@ namespace Serilog.Formatting.DotinSingleLiner
                 output.Write(',');
                 JsonValueFormatter.WriteQuotedJsonString(name, output);
                 output.Write(':');
-                if (property.Value.GetType() == typeof(string))
-                {
-                    var cleanedValue = property.ToString().Trim()
-                        .Replace("\n", " ")
-                        .Replace("\r", " ");
-
-                    var cleanedProperty = new LogEventProperty(name, new ScalarValue(cleanedValue));
-
-                    valueFormatter.Format(cleanedProperty.Value, output);
-                }
-                else
-                {
-                    valueFormatter.Format(property.Value, output);
-                }
+                valueFormatter.Format(property.Value, output);
             }
 
             output.Write('}');
