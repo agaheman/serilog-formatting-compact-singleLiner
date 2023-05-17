@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <Description>A simple, compact JSON-based event format for Serilog.</Description>
-    <Version>1.1.1-SingleLine1</Version>
+    <Version>1.1.1-SingleLine2</Version>
     <Authors>H.Shamekhi</Authors>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Serilog.Formatting.DotinSingleLiner</AssemblyName>
     <PackageId>Serilog.Formatting.DotinSingleLiner</PackageId>
