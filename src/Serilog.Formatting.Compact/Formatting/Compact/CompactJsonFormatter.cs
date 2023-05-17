@@ -16,10 +16,11 @@ using Serilog.Events;
 using Serilog.Formatting.Json;
 using Serilog.Parsing;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Serilog.Formatting.Compact.SingleLiner
+namespace Serilog.Formatting.DotinSingleLiner
 {
     /// <summary>
     /// An <see cref="ITextFormatter"/> that writes events in a compact JSON format.
@@ -64,7 +65,12 @@ namespace Serilog.Formatting.Compact.SingleLiner
             output.Write("{\"@t\":\"");
             output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
             output.Write("\",\"@mt\":");
-            JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Text, output);
+
+            var cleanedMessageTemplate = logEvent.MessageTemplate.Text.Trim()
+                        .Replace("\n", " ")
+                        .Replace("\r", " ");
+
+            JsonValueFormatter.WriteQuotedJsonString(cleanedMessageTemplate, output);
 
             var tokensWithFormat = logEvent.MessageTemplate.Tokens
                 .OfType<PropertyToken>()
@@ -98,7 +104,7 @@ namespace Serilog.Formatting.Compact.SingleLiner
             {
                 output.Write(",\"@x\":");
 
-                var cleanedException = logEvent.Exception.ToString().Trim()
+                var cleanedException = logEvent.Exception.ToStringDemystified()
                     .Replace("\n", " ")
                     .Replace("\r", " ");
 
@@ -117,20 +123,7 @@ namespace Serilog.Formatting.Compact.SingleLiner
                 output.Write(',');
                 JsonValueFormatter.WriteQuotedJsonString(name, output);
                 output.Write(':');
-                if (property.Value.GetType() == typeof(string))
-                {
-                    var cleanedValue = property.ToString().Trim()
-                        .Replace("\n", " ")
-                        .Replace("\r", " ");
-
-                    var cleanedProperty = new LogEventProperty(name, new ScalarValue(cleanedValue));
-
-                    valueFormatter.Format(cleanedProperty.Value, output);
-                }
-                else
-                {
-                    valueFormatter.Format(property.Value, output);
-                }
+                valueFormatter.Format(property.Value, output);
             }
 
             output.Write('}');

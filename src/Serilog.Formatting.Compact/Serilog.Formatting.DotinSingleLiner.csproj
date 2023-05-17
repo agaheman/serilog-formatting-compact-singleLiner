@@ -2,18 +2,23 @@
 
   <PropertyGroup>
     <Description>A simple, compact JSON-based event format for Serilog.</Description>
-    <VersionPrefix>1.1.1-alpha1</VersionPrefix>
-    <Version>1.1.1-alpha2</Version>
+    <Version>1.1.1-SingleLine1</Version>
     <Authors>H.Shamekhi</Authors>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Serilog.Formatting.Compact.SingleLiner</AssemblyName>
-    <PackageId>Serilog.Formatting.Compact.SingleLiner</PackageId>
+    <AssemblyName>Serilog.Formatting.DotinSingleLiner</AssemblyName>
+    <PackageId>Serilog.Formatting.DotinSingleLiner</PackageId>
     <PackageTags>serilog;json</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageOutputPath>C:\NugetStorage</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Serilog" Version="2.9.0" />
   </ItemGroup>
 

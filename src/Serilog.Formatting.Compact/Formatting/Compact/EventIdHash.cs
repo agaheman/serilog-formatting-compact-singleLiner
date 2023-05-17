@@ -14,7 +14,7 @@
 
 using System;
 
-namespace Serilog.Formatting.Compact.SingleLiner
+namespace Serilog.Formatting.DotinSingleLiner
 {
     /// <summary>
     /// Hash functions for message templates. See <see cref="Compute"/>.
