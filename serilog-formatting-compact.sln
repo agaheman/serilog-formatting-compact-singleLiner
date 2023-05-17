@@ -1,24 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26114.2
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{037440DE-440B-4129-9F7A-09B42D00397E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{E9D1B5E1-DEB9-4A04-8BAB-24EC7240ADAF}"
-	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		Build.ps1 = Build.ps1
-		CHANGES.md = CHANGES.md
-		README.md = README.md
-		assets\Serilog.snk = assets\Serilog.snk
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{67B1C971-75EE-4ABE-B184-66AAC8D9D572}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Formatting.Compact", "src\Serilog.Formatting.Compact\Serilog.Formatting.Compact.csproj", "{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Formatting.Compact.Tests", "test\Serilog.Formatting.Compact.Tests\Serilog.Formatting.Compact.Tests.csproj", "{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Formatting.Compact.SingleLiner", "src\Serilog.Formatting.Compact\Serilog.Formatting.Compact.SingleLiner.csproj", "{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,16 +17,14 @@ Global
 		{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3} = {037440DE-440B-4129-9F7A-09B42D00397E}
-		{BAEECC42-EC0C-4955-8AA1-BD3F4F0F4AAD} = {67B1C971-75EE-4ABE-B184-66AAC8D9D572}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C51B1484-E982-43BC-9271-76E6131CA1B4}
 	EndGlobalSection
 EndGlobal

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.IO;
-using System.Linq;
 using Serilog.Events;
 using Serilog.Formatting.Json;
 using Serilog.Parsing;
+using System;
+using System.IO;
+using System.Linq;
 
-namespace Serilog.Formatting.Compact
+namespace Serilog.Formatting.Compact.SingleLiner
 {
     /// <summary>
     /// An <see cref="ITextFormatter"/> that writes events in a compact JSON format.
     /// </summary>
-    public class CompactJsonFormatter: ITextFormatter
+    public class CompactJsonFormatter : ITextFormatter
     {
         readonly JsonValueFormatter _valueFormatter;
 
@@ -97,7 +97,12 @@ namespace Serilog.Formatting.Compact
             if (logEvent.Exception != null)
             {
                 output.Write(",\"@x\":");
-                JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.ToString(), output);
+
+                var cleanedException = logEvent.Exception.ToString().Trim()
+                    .Replace("\n", " ")
+                    .Replace("\r", " ");
+
+                JsonValueFormatter.WriteQuotedJsonString(cleanedException, output);
             }
 
             foreach (var property in logEvent.Properties)
@@ -112,7 +117,20 @@ namespace Serilog.Formatting.Compact
                 output.Write(',');
                 JsonValueFormatter.WriteQuotedJsonString(name, output);
                 output.Write(':');
-                valueFormatter.Format(property.Value, output);
+                if (property.Value.GetType() == typeof(string))
+                {
+                    var cleanedValue = property.ToString().Trim()
+                        .Replace("\n", " ")
+                        .Replace("\r", " ");
+
+                    var cleanedProperty = new LogEventProperty(name, new ScalarValue(cleanedValue));
+
+                    valueFormatter.Format(cleanedProperty.Value, output);
+                }
+                else
+                {
+                    valueFormatter.Format(property.Value, output);
+                }
             }
 
             output.Write('}');
