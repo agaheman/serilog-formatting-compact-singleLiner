@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{037440DE-440B-4129-9F7A-09B42D00397E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Formatting.DotinSingleLiner", "src\Serilog.Formatting.Compact\Serilog.Formatting.DotinSingleLiner.csproj", "{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Formatting.Dotin", "src\Serilog.Formatting.Compact\Serilog.Formatting.Dotin.csproj", "{E0BB862A-8B2C-46B5-9C90-B2F94C32EAB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

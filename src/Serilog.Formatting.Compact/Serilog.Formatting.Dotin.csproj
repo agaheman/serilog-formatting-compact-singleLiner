@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <Description>A simple, compact JSON-based event format for Serilog.</Description>
-    <Version>1.1.1-SingleLine4</Version>
-    <VersionPrefix>1.1.1</VersionPrefix>
+    <Version>1.1.1-SingleLine6</Version>
     <Authors>H.Shamekhi</Authors>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Serilog.Formatting.Dotin</AssemblyName>
     <PackageId>Serilog.Formatting.Dotin</PackageId>
